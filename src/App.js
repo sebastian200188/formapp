@@ -1,24 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {Fragment, useState, useEffect} from "react";
+import Navbar from "./components/Navbar";
+import FormList from "./components/FormList";
+import Form from "./components/Form";
+
+
 
 function App() {
+
+  const [heroku_9dab5d1d4fe89e1, setform] = useState({
+    Nombre: '',
+    Cédula: '',
+    Domicilio: '',
+    Ciudad: '',
+    Correo: '',
+    Whatsapp: '',
+    Actividad: ''
+  })
+
+  const [list, setlist] = useState([])
+
+  useEffect(()=>{
+    const getList = () =>{
+      fetch('https://comercioform-api-mysql.herokuapp.com/api')
+      .then(res => res.json())
+      .then(res => setlist(res))
+    }
+    getList()
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Fragment>
+      <Navbar brand='App Comercio Colaborativo' />
+      <div className="container">
+        <div className="row">
+          <div>
+            <h2 className="mb-3" style={{textAlign: 'center'}}>FORMULARIO REGISTRO</h2>
+            <Form form={heroku_9dab5d1d4fe89e1} setform={setform} />
+          </div>
+        </div>
+      </div>
+    </Fragment>
   );
 }
 
